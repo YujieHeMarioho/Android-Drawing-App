@@ -11,14 +11,14 @@
         android:id="@+id/fragmentContainerView2"
         android:name="com.example.finaldraw.DrawFragment"
         android:layout_width="match_parent"
-        android:layout_height="913dp"
+        android:layout_height="988dp"
         android:layout_weight="1" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="com.example.finaldraw.ClickFragment"
         android:layout_width="match_parent"
-        android:layout_height="556dp"
+        android:layout_height="426dp"
         android:layout_weight="1" />
 
 

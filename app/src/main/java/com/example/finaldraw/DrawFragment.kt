@@ -11,6 +11,7 @@ import com.example.finaldraw.databinding.FragmentDrawBinding
 
 class DrawFragment : Fragment() {
 
+    private var defaultColor = Color.BLACK // Default color
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentDrawBinding.inflate(inflater)
 
@@ -50,5 +51,4 @@ class DrawFragment : Fragment() {
         }
         return binding.root
     }
-
 }

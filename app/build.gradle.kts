@@ -61,4 +61,7 @@ dependencies {
     //Fragment stuff
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    // Color picker
+    implementation ("com.github.yukuku:ambilwarna:2.0.1")
+
 }

@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import com.example.finaldraw.databinding.FragmentClickBinding
+import yuku.ambilwarna.AmbilWarnaDialog
 
 class ClickFragment : Fragment() {
 
-
+    private var defaultColor = Color.BLACK // Initialize with black or any default color
     private var buttonFunction : () -> Unit = {}
 
     fun setButtonFunction(newFunc: () -> Unit) {
@@ -32,9 +33,8 @@ class ClickFragment : Fragment() {
             buttonFunction()
         }
 
-        binding.blueButton.setOnClickListener {
-            viewModel.changePenColor(Color.BLUE)
-            buttonFunction()
+        binding.colorPicker.setOnClickListener {
+            openColorPicker()
         }
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -47,9 +47,28 @@ class ClickFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
+        // Set up the color picker button click listener
+//        binding.blueButton.setOnClickListener {
+//            openColorPicker()
+//        }
 
         return binding.root
     }
 
+    private fun openColorPicker() {
+        val colorPicker = AmbilWarnaDialog(context, defaultColor, true, object : AmbilWarnaDialog.OnAmbilWarnaListener {
+            override fun onCancel(dialog: AmbilWarnaDialog?) {
+                // Handle cancel
+            }
+
+            override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
+                // Update default color and change pen color in ViewModel
+                defaultColor = color
+                val viewModel: SimpleViewModel by activityViewModels()
+                viewModel.changePenColor(color)
+            }
+        })
+        colorPicker.show()
+    }
 
 }
