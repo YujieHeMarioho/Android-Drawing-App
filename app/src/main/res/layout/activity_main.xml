@@ -17,7 +17,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="com.example.finaldraw.ClickFragment"
-        android:layout_width="421dp"
+        android:layout_width="match_parent"
         android:layout_height="556dp"
         android:layout_weight="1" />
 

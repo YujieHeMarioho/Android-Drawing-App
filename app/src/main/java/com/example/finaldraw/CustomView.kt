@@ -86,4 +86,10 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     fun changePenColor(color: Int) {
         paint.color = color
     }
+
+    fun changePenSize(size: Float) {
+        paint.strokeWidth = size
+        // Invalidate the view to ensure the change is reflected
+        invalidate()
+    }
 }

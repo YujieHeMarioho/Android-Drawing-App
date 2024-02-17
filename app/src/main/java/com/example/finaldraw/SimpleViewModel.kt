@@ -18,6 +18,9 @@ class SimpleViewModel : ViewModel() {
     private val _penColor = MutableLiveData<Int>()
     val penColor: LiveData<Int> = _penColor
 
+    private val _penSize = MutableLiveData<Float>()
+    val penSize: LiveData<Float> = _penSize
+
     fun changePenColor(color: Int) {
         _penColor.value = color
     }
@@ -28,6 +31,10 @@ class SimpleViewModel : ViewModel() {
             _colorEvent.value = Event(color)
             _isReadyToDraw.value = true // Indicate readiness to draw a circle upon next touch
         }
+    }
+
+    fun changePenSize(size: Float) {
+        _penSize.value = size
     }
 
     // Call this method to reset readiness (after drawing a circle, for example)

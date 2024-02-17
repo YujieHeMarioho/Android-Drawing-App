@@ -16,6 +16,14 @@ class DrawFragment : Fragment() {
 
         val viewModel: SimpleViewModel by activityViewModels()
 
+        viewModel.penSize.observe(viewLifecycleOwner) { size ->
+            binding.customView.changePenSize(size)
+        }
+
+        viewModel.penColor.observe(viewLifecycleOwner) { color ->
+            binding.customView.changePenColor(color)
+        }
+
         // Observe the color event
         viewModel.colorEvent.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { color ->
@@ -35,10 +43,6 @@ class DrawFragment : Fragment() {
                         binding.customView.prepareForCircleDrawing(true, colorInt)
                         viewModel.resetReadyToDraw() // Reset readiness to avoid repeating this action
                     }
-                }
-
-                viewModel.penColor.observe(viewLifecycleOwner) { color ->
-                    binding.customView.changePenColor(color)
                 }
             }
         }
