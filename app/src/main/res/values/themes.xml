@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.FinalDraw" parent="Base.Theme.FinalDraw" />
+
+    <style name="Theme.App.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/fishing_pole</item>
+        <item name="postSplashScreenTheme">@style/Theme.FinalDraw</item>
+    </style>
+
 </resources>
