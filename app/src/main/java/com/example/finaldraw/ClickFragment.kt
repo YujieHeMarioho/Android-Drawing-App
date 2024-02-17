@@ -27,7 +27,7 @@ class ClickFragment : Fragment() {
         val binding = FragmentClickBinding.inflate(inflater, container, false)
         val viewModel : SimpleViewModel by activityViewModels()
 
-        binding.clickMe.setOnClickListener {
+        binding.circle.setOnClickListener {
             viewModel.pickColor()
             buttonFunction()
         }

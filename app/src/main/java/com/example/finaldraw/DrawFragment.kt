@@ -16,10 +16,12 @@ class DrawFragment : Fragment() {
 
         val viewModel: SimpleViewModel by activityViewModels()
 
+        // Observe pensize change
         viewModel.penSize.observe(viewLifecycleOwner) { size ->
             binding.customView.changePenSize(size)
         }
 
+        // Observe pencolor change
         viewModel.penColor.observe(viewLifecycleOwner) { color ->
             binding.customView.changePenColor(color)
         }
