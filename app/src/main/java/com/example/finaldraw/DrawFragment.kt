@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import com.example.finaldraw.databinding.FragmentDrawBinding
 
@@ -15,7 +16,29 @@ class DrawFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentDrawBinding.inflate(inflater)
 
-        val viewModel: SimpleViewModel by activityViewModels()
+//        val viewModel: SimpleViewModel by activityViewModels()
+
+        val viewModel: SimpleViewModel by activityViewModels() {
+            DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)}
+
+        fun saveCurrentDrawing() {
+            val fileName = binding.customView.saveDrawingToFile(requireContext())
+            // Now save this fileName along with any other necessary details to the database
+            val drawing = Drawing(fileName = fileName)
+            viewModel.addDrawing(drawing) // Assuming you have a method in your ViewModel to handle database operations
+        }
+
+        fun loadDrawing() {
+            binding.customView.loadBitmapFromFile(requireContext(), "drawing_1711055080686.png")
+        }
+
+        binding.saveBut.setOnClickListener {
+            saveCurrentDrawing()
+        }
+
+        binding.loadButton.setOnClickListener {
+            loadDrawing()
+        }
 
         // Observe pensize change
         viewModel.penSize.observe(viewLifecycleOwner) { size ->

@@ -16,7 +16,12 @@ class ClickFragment : Fragment() {
     private var defaultColor = Color.BLACK // Initialize with black or any default color
     private var buttonFunction : () -> Unit = {}
 
-    fun setButtonFunction(newFunc: () -> Unit) {
+//    val viewModel: SimpleViewModel by activityViewModels()
+    val viewModel: SimpleViewModel by activityViewModels() {
+            DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)}
+
+
+        fun setButtonFunction(newFunc: () -> Unit) {
         buttonFunction = newFunc
     }
 
@@ -26,7 +31,6 @@ class ClickFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         val binding = FragmentClickBinding.inflate(inflater, container, false)
-        val viewModel : SimpleViewModel by activityViewModels()
 
         binding.circle.setOnClickListener {
             viewModel.pickColor()
@@ -51,6 +55,9 @@ class ClickFragment : Fragment() {
 //        binding.blueButton.setOnClickListener {
 //            openColorPicker()
 //        }
+//        binding.saveButton.setOnClickListener {
+//
+//        }
 
         return binding.root
     }
@@ -64,7 +71,7 @@ class ClickFragment : Fragment() {
             override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
                 // Update default color and change pen color in ViewModel
                 defaultColor = color
-                val viewModel: SimpleViewModel by activityViewModels()
+                //val viewModel: SimpleViewModel by activityViewModels()
                 viewModel.changePenColor(color)
             }
         })

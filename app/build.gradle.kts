@@ -2,6 +2,11 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+
+    //needed for automatic JSON serialization/deserialization
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    //for room
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -69,4 +74,21 @@ dependencies {
     testImplementation ("org.mockito:mockito-inline:3.11.2")
     testImplementation ("androidx.arch.core:core-testing:2.1.0")
 
+    // Room Stuff
+    implementation("androidx.room:room-common:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    //KTOR dependencies
+    implementation("io.ktor:ktor-client-core:2.3.8")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.8")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
+    implementation("io.ktor:ktor-client-cio:2.3.8")
+    implementation("io.ktor:ktor-client-android:2.3.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    //Jetpack compose
+    implementation ("androidx.compose.ui:ui:latest_version")
+    implementation ("androidx.compose.material:material:latest_version")
+    implementation ("androidx.activity:activity-compose:latest_version")
 }

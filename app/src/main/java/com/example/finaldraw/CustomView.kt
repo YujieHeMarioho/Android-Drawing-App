@@ -3,8 +3,12 @@ package com.example.finaldraw
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private lateinit var bitmap: Bitmap
@@ -91,5 +95,52 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         paint.strokeWidth = size
         // Invalidate the view to ensure the change is reflected
         invalidate()
+    }
+
+    // Save stuff
+    fun saveDrawingToFile(context: Context): String {
+        // Generate a unique file name or use a specific one
+        val fileName = "drawing_${System.currentTimeMillis()}.png"
+        val file = File(context.filesDir, fileName)
+        try {
+            FileOutputStream(file).use { out ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return fileName // Return the file name for storing in the database
+    }
+
+//    fun loadBitmapFromFile(context: Context, fileName: String) {
+//        val file = File(context.filesDir, fileName)
+//        if (file.exists()) {
+//            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+//            // Set the bitmap to the current view
+//            this.bitmap = bitmap
+//            bitmapCanvas = Canvas(this.bitmap)
+//            invalidate() // Redraw the view
+//        }
+//    }
+
+    fun loadBitmapFromFile(context: Context, fileName: String) {
+        val file = File(context.filesDir, fileName)
+        if (file.exists()) {
+            val options = BitmapFactory.Options().apply {
+                inMutable = true
+            }
+            val newBitmap = BitmapFactory.decodeFile(file.absolutePath, options)
+            if (newBitmap != null) {
+                // Recycle the old bitmap if it is initialized and different from the new bitmap
+                if (::bitmap.isInitialized && bitmap != newBitmap && !bitmap.isRecycled) {
+                    bitmap.recycle()
+                }
+                bitmap = newBitmap
+                bitmapCanvas = Canvas(bitmap)
+                invalidate()
+            } else {
+                Log.e("CustomView", "Failed to decode bitmap from file: $fileName")
+            }
+        }
     }
 }
