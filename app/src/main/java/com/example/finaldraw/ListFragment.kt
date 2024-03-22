@@ -1,9 +1,9 @@
 package com.example.finaldraw
 
-//import android.os.Bundle
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 //import androidx.compose.foundation.clickable
 //import androidx.compose.foundation.layout.Column
 //import androidx.compose.foundation.layout.padding
@@ -28,6 +28,13 @@ import com.example.finaldraw.Drawing
 class ListFragment : Fragment() {
     private val viewModel: SimpleViewModel by viewModels {
         DrawingViewModelFactory((requireActivity().application as DrawingApplication).drawingRepository)
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_list, container, false)
     }
 //    //val list by viewModel.drawings.collectAsState(initial = listOf())
 //

@@ -8,21 +8,28 @@
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="585dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/drawingFragmentView"
         android:name="com.example.finaldraw.DrawFragment"
-        android:layout_width="match_parent"
-        android:layout_height="988dp"
+        android:layout_width="63dp"
+        android:layout_height="93dp"
         android:layout_weight="1"
-        app:navGraph="@navigation/nav_graph"
-        app:defaultNavHost = "true"/>
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolFragmentView"
         android:name="com.example.finaldraw.ClickFragment"
         android:layout_width="match_parent"
-        android:layout_height="426dp"
-        android:layout_weight="1" />
+        android:layout_height="140dp" />
 
 
 </LinearLayout>

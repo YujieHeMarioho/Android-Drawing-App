@@ -39,7 +39,7 @@ class DrawFragment : Fragment() {
         }
 
         binding.loadButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawFragment_to_listFragment2)
+            findNavController().navigate(R.id.action_drawFragment_to_listFragment)
             //loadDrawing()
         }
 
