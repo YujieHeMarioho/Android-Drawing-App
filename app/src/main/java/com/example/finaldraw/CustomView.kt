@@ -112,35 +112,28 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return fileName // Return the file name for storing in the database
     }
 
-//    fun loadBitmapFromFile(context: Context, fileName: String) {
-//        val file = File(context.filesDir, fileName)
-//        if (file.exists()) {
-//            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-//            // Set the bitmap to the current view
-//            this.bitmap = bitmap
-//            bitmapCanvas = Canvas(this.bitmap)
-//            invalidate() // Redraw the view
-//        }
-//    }
 
-    fun loadBitmapFromFile(fileName: String) {
+    fun loadBitmapFromFile(context: Context, fileName: String) {
         val file = File(context.filesDir, fileName)
         if (file.exists()) {
-            val options = BitmapFactory.Options().apply {
-                inMutable = true
-            }
-            val newBitmap = BitmapFactory.decodeFile(file.absolutePath, options)
-            if (newBitmap != null) {
-                // Recycle the old bitmap if it is initialized and different from the new bitmap
-                if (::bitmap.isInitialized && bitmap != newBitmap && !bitmap.isRecycled) {
+            // Ensure the bitmap is mutable by specifying BitmapFactory.Options
+            val options = BitmapFactory.Options().apply { inMutable = true }
+            BitmapFactory.decodeFile(file.absolutePath, options)?.also { newBitmap ->
+                // Replace the current bitmap with the loaded one
+                // Make sure to recycle the old bitmap to free up memory
+                if (::bitmap.isInitialized && !bitmap.isRecycled) {
                     bitmap.recycle()
                 }
                 bitmap = newBitmap
                 bitmapCanvas = Canvas(bitmap)
-                invalidate()
-            } else {
+                invalidate() // Trigger a redraw of the view to display the new bitmap
+            } ?: run {
                 Log.e("CustomView", "Failed to decode bitmap from file: $fileName")
             }
+        } else {
+            Log.e("CustomView", "File does not exist: $fileName")
         }
     }
+
+
 }

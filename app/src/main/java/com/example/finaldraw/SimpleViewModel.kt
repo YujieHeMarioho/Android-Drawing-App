@@ -9,6 +9,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+//import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
 
@@ -38,6 +43,8 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
 
     private val _fileName = MutableLiveData<String>()
     val fileName: LiveData<String> = _fileName
+//    private val _fileName = MutableStateFlow<String?>(null)
+//    val fileName = _fileName.asStateFlow()
 
     fun triggerSaveDrawing() {
         _saveDrawingEvent.value = true;
@@ -66,20 +73,23 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
 
     fun setFileName(name: String) {
         _fileName.value = name // This will notify observers
+//        viewModelScope.launch {
+//            _fileName.value = name
+        }
     }
 //    fun string getSelectedFileName{
 //        return fileName;
 //    }
 
-    fun deleteAllDrawings() = viewModelScope.launch {
-        repository.deleteAllDrawings()
-        // Now, delete all files from internal storage
-        //deleteAllFilesFromInternalStorage()
-    }
+//    fun deleteAllDrawings() = viewModelScope.launch {
+//        repository.deleteAllDrawings()
+//        // Now, delete all files from internal storage
+//        //deleteAllFilesFromInternalStorage()
+//    }
 
     //fun getAllDrawings(): Flow<List<Drawing>> =
 
-}
+
 
 class Event<out T>(private val content: T) {
     var hasBeenHandled = false

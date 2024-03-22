@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 
 
 import androidx.compose.material3.Text
+import androidx.fragment.app.activityViewModels
 
 
 // Make sure to import your Drawing class
@@ -35,7 +36,7 @@ import com.example.finaldraw.Drawing
 import java.lang.reflect.Modifier
 
 class ListFragment : Fragment() {
-    private val viewModel: SimpleViewModel by viewModels {
+    val viewModel: SimpleViewModel by activityViewModels() {
         DrawingViewModelFactory((requireActivity().application as DrawingApplication).drawingRepository)
     }
     override fun onCreateView(
@@ -47,6 +48,7 @@ class ListFragment : Fragment() {
                 DrawingListScreen(viewModel = viewModel) { fileName ->
                     // Set the fileName in the shared ViewModel
                     viewModel.setFileName(fileName)
+
                     // Navigate back to DrawFragment
                     findNavController().navigate(R.id.action_listFragment_to_drawFragment)
                 }

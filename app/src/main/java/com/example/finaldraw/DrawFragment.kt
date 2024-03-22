@@ -12,12 +12,20 @@ import androidx.fragment.app.activityViewModels
 import com.example.finaldraw.databinding.FragmentDrawBinding
 import androidx.navigation.fragment.findNavController
 
+
+
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+
 class DrawFragment : Fragment() {
 
     private var defaultColor = Color.BLACK // Default color
     private lateinit var binding: FragmentDrawBinding
     val viewModel: SimpleViewModel by activityViewModels() {
-        DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)}
+        DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentDrawBinding.inflate(inflater)
 
@@ -52,8 +60,11 @@ class DrawFragment : Fragment() {
         }
 
         //Oberser the file name
-        viewModel.fileName.observe(viewLifecycleOwner){ fileName1 ->
-            binding.customView.loadBitmapFromFile(fileName1)
+        /////
+        ///
+        //
+        viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
+            binding.customView.loadBitmapFromFile(requireContext(),fileName)
         }
 
         // Observe pencolor change
@@ -83,6 +94,23 @@ class DrawFragment : Fragment() {
                 }
             }
         }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.fileName.collect { fileName ->
+//                fileName?.let {
+//                    // Your method to load the bitmap with the filename
+//                    binding.customView.loadBitmapFromFile(it)
+//                }
+//            }
+//        }
+        //super.onCreat(savedInstanceState)
+
+//        parentFragmentManager.setFragmentResultListener("requestKey", this) { key, bundle ->
+//            // Handle the result
+//            val fileName = bundle.getString("fileName")
+//            if (fileName != null) {
+//                binding.customView.loadBitmapFromFile(fileName)
+//            }
+//        }
 
 //        val fileName = viewModel.myfileName
 //        if (fileName != null) {
