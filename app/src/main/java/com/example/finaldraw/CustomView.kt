@@ -18,6 +18,7 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     var readyToDrawCircle = false
     private var circleColor: Int = Color.BLACK
+    private var tempBitmap: Bitmap? = null
 
     init {
         paint.color = Color.BLACK
@@ -27,14 +28,28 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // Removed the drawing operation from init
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        // Initialize bitmap and canvas with the view's dimensions
-        if (::bitmap.isInitialized) bitmap.recycle() // Recycle the old bitmap if it exists
-        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        bitmapCanvas = Canvas(bitmap)
-        bitmapCanvas.drawColor(Color.WHITE)
+override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    super.onSizeChanged(w, h, oldw, oldh)
+
+    // If bitmap is initialized, save its state
+    if (::bitmap.isInitialized && !bitmap.isRecycled) {
+        tempBitmap = bitmap.copy(bitmap.config, true)
+        bitmap.recycle()
     }
+
+    // Initialize bitmap and canvas with the view's dimensions
+    bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).also {
+        bitmapCanvas = Canvas(it)
+        bitmapCanvas.drawColor(Color.WHITE)
+
+        // If there's a saved state, draw it on the new canvas and clear the tempBitmap
+        tempBitmap?.let { temp ->
+            bitmapCanvas.drawBitmap(temp, 0f, 0f, null)
+            temp.recycle() // Recycle the temp bitmap to free up memory
+        }
+        tempBitmap = null // Clear the reference to tempBitmap
+    }
+}
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
