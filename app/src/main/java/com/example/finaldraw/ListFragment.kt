@@ -36,7 +36,7 @@ import com.example.finaldraw.Drawing
 import java.lang.reflect.Modifier
 
 class ListFragment : Fragment() {
-    val viewModel: SimpleViewModel by activityViewModels() {
+    private val viewModel: SimpleViewModel by activityViewModels() {
         DrawingViewModelFactory((requireActivity().application as DrawingApplication).drawingRepository)
     }
     override fun onCreateView(
@@ -49,8 +49,6 @@ class ListFragment : Fragment() {
                     // Set the fileName in the shared ViewModel
                     findNavController().navigate(R.id.action_listFragment_to_drawFragment)
                     viewModel.setFileName(fileName)
-                    // Navigate back to DrawFragment
-                    //findNavController().navigate(R.id.action_listFragment_to_drawFragment)
                 }
             }
         }
@@ -65,9 +63,7 @@ class ListFragment : Fragment() {
             }
         }
     }
-//
-//
-//
+
     @Composable
     fun ListItem(drawing: Drawing, onDrawingClick: (String) -> Unit) {
         // Assuming you have a basic UI for each item

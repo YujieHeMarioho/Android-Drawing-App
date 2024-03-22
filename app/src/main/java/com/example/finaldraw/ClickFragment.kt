@@ -17,8 +17,7 @@ class ClickFragment : Fragment() {
 
     private var defaultColor = Color.BLACK // Initialize with black or any default color
     private var buttonFunction : () -> Unit = {}
-
-//    val viewModel: SimpleViewModel by activityViewModels()
+    
     val viewModel: SimpleViewModel by activityViewModels() {
             DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)}
 
@@ -41,7 +40,6 @@ class ClickFragment : Fragment() {
 
         binding.colorPicker.setOnClickListener {
             openColorPicker()
-            //viewModel.deleteAllDrawings()
 
         }
 
@@ -54,14 +52,6 @@ class ClickFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-        // Set up the color picker button click listener
-//        binding.blueButton.setOnClickListener {
-//            openColorPicker()
-//        }
-//        binding.saveButton.setOnClickListener {
-//
-//        }
 
         return binding.root
     }

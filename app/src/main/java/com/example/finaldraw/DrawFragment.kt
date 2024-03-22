@@ -24,12 +24,11 @@ import kotlinx.coroutines.launch
 class DrawFragment : Fragment() {
 
     private var defaultColor = Color.BLACK // Default color
-    //private lateinit var binding: FragmentDrawBinding
     private var _binding: FragmentDrawBinding? = null
     private val binding get() = _binding!!
 
 
-    val viewModel: SimpleViewModel by activityViewModels() {
+    private val viewModel: SimpleViewModel by activityViewModels() {
         DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -42,17 +41,12 @@ class DrawFragment : Fragment() {
             viewModel.addDrawing(drawing) // Assuming you have a method in your ViewModel to handle database operations
         }
 
-        fun loadDrawing() {
-            binding.customView.loadBitmapFromFile(requireContext(), "drawing_1711132736237.png")
-        }
-
         binding.saveBut.setOnClickListener {
             saveCurrentDrawing()
         }
 
         binding.loadButton.setOnClickListener {
             findNavController().navigate(R.id.action_drawFragment_to_listFragment)
-            //loadDrawing()
         }
 
 
@@ -60,11 +54,6 @@ class DrawFragment : Fragment() {
         viewModel.penSize.observe(viewLifecycleOwner) { size ->
             binding.customView.changePenSize(size)
         }
-
-        // Observe changes to the file name
-//        viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
-//            binding.customView.loadBitmapFromFile(requireContext(),fileName)
-//        }
 
         // Observe pencolor change
         viewModel.penColor.observe(viewLifecycleOwner) { color ->
