@@ -1,3 +1,7 @@
+/**
+ * Matthew Goh, Yujie He, Eric Rapp
+ * ViewModel holds all the liveData for drawing variables and loading states.
+ */
 package com.example.finaldraw
 
 import android.graphics.Color
@@ -22,6 +26,10 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
 
     fun addDrawing(drawing: Drawing) = viewModelScope.launch {
         repository.insertDrawing(drawing)
+    }
+
+    fun deleteDrawing(drawing: Drawing) = viewModelScope.launch {
+        repository.deleteDrawing(drawing)
     }
 
     private val _colorEvent = MutableLiveData<Event<Color>>()

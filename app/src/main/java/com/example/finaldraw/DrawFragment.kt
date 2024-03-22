@@ -1,3 +1,8 @@
+/**
+ * Matthew Goh, Yujie He, Eric Rapp
+ * DrawFragment observes changes to liveData in the viewModel to update the CustomView
+ * Also contains some event listeners for the save and load buttons.
+ */
 package com.example.finaldraw
 
 import android.graphics.Color

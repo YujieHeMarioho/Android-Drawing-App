@@ -1,3 +1,8 @@
+/**
+ * Matthew Goh, Yujie He, Eric Rapp
+ * This customView holds the canvas settings and is responsible for the logic for saving and
+ * loading.
+ */
 package com.example.finaldraw
 
 import android.content.Context
@@ -27,7 +32,6 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         paint.strokeWidth = 4f
         // Removed the drawing operation from init
     }
-
 override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
     super.onSizeChanged(w, h, oldw, oldh)
 

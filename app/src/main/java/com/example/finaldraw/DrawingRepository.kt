@@ -16,6 +16,10 @@ class DrawingRepository(private val scope: CoroutineScope, private val dao: Draw
         dao.insert(drawing);
     }
 
+    suspend fun deleteDrawing(drawing: Drawing) {
+        dao.delete(drawing);
+    }
+
     suspend fun deleteAllDrawings() {
         dao.deleteAllDrawings()
     }

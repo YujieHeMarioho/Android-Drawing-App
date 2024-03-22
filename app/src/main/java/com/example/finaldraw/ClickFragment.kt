@@ -1,3 +1,8 @@
+/**
+ * Matthew Goh, Yujie He, Eric Rapp
+ * This click fragment is responsible for holding all the toolbar drawing options like
+ * color, size, and shape.
+ */
 package com.example.finaldraw
 
 import android.graphics.Color

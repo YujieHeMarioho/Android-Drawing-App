@@ -1,3 +1,7 @@
+/**
+ * Matthew Goh, Yujie He, Eric Rapp
+ * This class just sets up splash screen logic and holds the layout for fragment views.
+ */
 package com.example.finaldraw
 
 import androidx.appcompat.app.AppCompatActivity
