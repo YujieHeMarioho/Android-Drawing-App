@@ -12,7 +12,10 @@
         android:name="com.example.finaldraw.DrawFragment"
         android:layout_width="match_parent"
         android:layout_height="988dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost = "true"/>
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolFragmentView"

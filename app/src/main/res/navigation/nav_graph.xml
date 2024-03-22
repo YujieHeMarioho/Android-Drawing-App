@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/drawFragment">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.finaldraw.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/clickFragment"
+        android:name="com.example.finaldraw.ClickFragment"
+        android:label="fragment_click"
+        tools:layout="@layout/fragment_click" />
+    <fragment
+        android:id="@+id/drawFragment"
+        android:name="com.example.finaldraw.DrawFragment"
+        android:label="fragment_draw"
+        tools:layout="@layout/fragment_draw" >
+        <action
+            android:id="@+id/action_drawFragment_to_listFragment2"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.finaldraw.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list" />
+</navigation>

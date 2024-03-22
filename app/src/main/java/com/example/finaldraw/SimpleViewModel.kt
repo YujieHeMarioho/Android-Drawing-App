@@ -6,10 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
+
+    // Expose the flow provided by the dao, instantiated in the Repository
+    val drawings: Flow<List<Drawing>> = repository.allDrawings
 
     fun addDrawing(drawing: Drawing) = viewModelScope.launch {
         repository.insertDrawing(drawing)

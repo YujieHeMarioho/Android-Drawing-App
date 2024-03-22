@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import com.example.finaldraw.databinding.FragmentDrawBinding
+import androidx.navigation.fragment.findNavController
 
 class DrawFragment : Fragment() {
 
     private var defaultColor = Color.BLACK // Default color
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentDrawBinding.inflate(inflater)
+
 
 //        val viewModel: SimpleViewModel by activityViewModels()
 
@@ -37,7 +39,8 @@ class DrawFragment : Fragment() {
         }
 
         binding.loadButton.setOnClickListener {
-            loadDrawing()
+            findNavController().navigate(R.id.action_drawFragment_to_listFragment2)
+            //loadDrawing()
         }
 
         // Observe pensize change

@@ -7,6 +7,9 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     //for room
     id("com.google.devtools.ksp")
+    // For navigaton
+    //id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -54,6 +57,10 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-runtime-testing:2.7.0")
+    // Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -88,7 +95,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     //Jetpack compose
-    implementation ("androidx.compose.ui:ui:latest_version")
-    implementation ("androidx.compose.material:material:latest_version")
-    implementation ("androidx.activity:activity-compose:latest_version")
+//    implementation ("androidx.compose.ui:ui:latest_version")
+//    implementation ("androidx.compose.material:material:latest_version")
+//    implementation ("androidx.activity:activity-compose:latest_version")
 }

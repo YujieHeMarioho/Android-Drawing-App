@@ -10,6 +10,8 @@ import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import com.example.finaldraw.databinding.FragmentClickBinding
 import yuku.ambilwarna.AmbilWarnaDialog
+import androidx.navigation.fragment.findNavController
+
 
 class ClickFragment : Fragment() {
 
