@@ -16,16 +16,6 @@
         app:navGraph="@navigation/nav_graph" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/drawingFragmentView"
-        android:name="com.example.finaldraw.DrawFragment"
-        android:layout_width="63dp"
-        android:layout_height="93dp"
-        android:layout_weight="1"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
-
-
-    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/toolFragmentView"
         android:name="com.example.finaldraw.ClickFragment"
         android:layout_width="match_parent"

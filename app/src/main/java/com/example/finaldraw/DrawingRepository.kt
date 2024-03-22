@@ -12,6 +12,8 @@ class DrawingRepository(private val scope: CoroutineScope, private val dao: Draw
     // Calls the dao to get all the facts stored in the database
     val allDrawings: Flow<List<Drawing>> = dao.getAllDrawings()
 
+    //val mostRecent: Flow<Drawing?> = dao.getMostRecentDrawing()
+
     suspend fun insertDrawing(drawing: Drawing) {
         dao.insert(drawing);
     }

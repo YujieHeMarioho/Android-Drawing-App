@@ -116,24 +116,21 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     fun loadBitmapFromFile(context: Context, fileName: String) {
         val file = File(context.filesDir, fileName)
         if (file.exists()) {
-            // Ensure the bitmap is mutable by specifying BitmapFactory.Options
-            val options = BitmapFactory.Options().apply { inMutable = true }
-            BitmapFactory.decodeFile(file.absolutePath, options)?.also { newBitmap ->
-                // Replace the current bitmap with the loaded one
-                // Make sure to recycle the old bitmap to free up memory
-                if (::bitmap.isInitialized && !bitmap.isRecycled) {
+            val options = BitmapFactory.Options().apply {
+                inMutable = true
+            }
+            val newBitmap = BitmapFactory.decodeFile(file.absolutePath, options)
+            if (newBitmap != null) {
+                // Recycle the old bitmap if it is initialized and different from the new bitmap
+                if (::bitmap.isInitialized && bitmap != newBitmap && !bitmap.isRecycled) {
                     bitmap.recycle()
                 }
                 bitmap = newBitmap
                 bitmapCanvas = Canvas(bitmap)
-                invalidate() // Trigger a redraw of the view to display the new bitmap
-            } ?: run {
+                invalidate()
+            } else {
                 Log.e("CustomView", "Failed to decode bitmap from file: $fileName")
             }
-        } else {
-            Log.e("CustomView", "File does not exist: $fileName")
         }
     }
-
-
 }

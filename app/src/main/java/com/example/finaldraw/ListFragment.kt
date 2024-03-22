@@ -47,10 +47,10 @@ class ListFragment : Fragment() {
             setContent {
                 DrawingListScreen(viewModel = viewModel) { fileName ->
                     // Set the fileName in the shared ViewModel
-                    viewModel.setFileName(fileName)
-
-                    // Navigate back to DrawFragment
                     findNavController().navigate(R.id.action_listFragment_to_drawFragment)
+                    viewModel.setFileName(fileName)
+                    // Navigate back to DrawFragment
+                    //findNavController().navigate(R.id.action_listFragment_to_drawFragment)
                 }
             }
         }

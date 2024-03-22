@@ -19,6 +19,7 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
 
     // Expose the flow provided by the dao, instantiated in the Repository
     val drawings: Flow<List<Drawing>> = repository.allDrawings
+    //val recent: Flow<Drawing?> = repository.mostRecent
 
 
     fun addDrawing(drawing: Drawing) = viewModelScope.launch {

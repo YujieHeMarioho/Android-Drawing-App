@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import com.example.finaldraw.databinding.FragmentDrawBinding
 import androidx.navigation.fragment.findNavController
@@ -22,14 +24,16 @@ import kotlinx.coroutines.launch
 class DrawFragment : Fragment() {
 
     private var defaultColor = Color.BLACK // Default color
-    private lateinit var binding: FragmentDrawBinding
+    //private lateinit var binding: FragmentDrawBinding
+    private var _binding: FragmentDrawBinding? = null
+    private val binding get() = _binding!!
+
+
     val viewModel: SimpleViewModel by activityViewModels() {
         DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = FragmentDrawBinding.inflate(inflater)
-
-
+        _binding = FragmentDrawBinding.inflate(inflater)
 
         fun saveCurrentDrawing() {
             val fileName = binding.customView.saveDrawingToFile(requireContext())
@@ -38,9 +42,9 @@ class DrawFragment : Fragment() {
             viewModel.addDrawing(drawing) // Assuming you have a method in your ViewModel to handle database operations
         }
 
-//        fun loadDrawing() {
-//            binding.customView.loadBitmapFromFile(requireContext(), "drawing_1711055080686.png")
-//        }
+        fun loadDrawing() {
+            binding.customView.loadBitmapFromFile(requireContext(), "drawing_1711132736237.png")
+        }
 
         binding.saveBut.setOnClickListener {
             saveCurrentDrawing()
@@ -48,9 +52,7 @@ class DrawFragment : Fragment() {
 
         binding.loadButton.setOnClickListener {
             findNavController().navigate(R.id.action_drawFragment_to_listFragment)
-            //viewModel.
             //loadDrawing()
-
         }
 
 
@@ -59,13 +61,10 @@ class DrawFragment : Fragment() {
             binding.customView.changePenSize(size)
         }
 
-        //Oberser the file name
-        /////
-        ///
-        //
-        viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
-            binding.customView.loadBitmapFromFile(requireContext(),fileName)
-        }
+        // Observe changes to the file name
+//        viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
+//            binding.customView.loadBitmapFromFile(requireContext(),fileName)
+//        }
 
         // Observe pencolor change
         viewModel.penColor.observe(viewLifecycleOwner) { color ->
@@ -94,31 +93,21 @@ class DrawFragment : Fragment() {
                 }
             }
         }
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewModel.fileName.collect { fileName ->
-//                fileName?.let {
-//                    // Your method to load the bitmap with the filename
-//                    binding.customView.loadBitmapFromFile(it)
-//                }
-//            }
-//        }
-        //super.onCreat(savedInstanceState)
-
-//        parentFragmentManager.setFragmentResultListener("requestKey", this) { key, bundle ->
-//            // Handle the result
-//            val fileName = bundle.getString("fileName")
-//            if (fileName != null) {
-//                binding.customView.loadBitmapFromFile(fileName)
-//            }
-//        }
-
-//        val fileName = viewModel.myfileName
-//        if (fileName != null) {
-//            binding.customView.loadBitmapFromFile(fileName)
-//        }
-
-
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
+            binding.customView.loadBitmapFromFile(requireContext(),fileName)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Nullify the binding when the view is destroyed to avoid memory leaks
+        _binding = null
     }
 }

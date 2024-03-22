@@ -34,4 +34,7 @@ interface DrawingDao {
 
     @Query("DELETE FROM Drawing")
     suspend fun deleteAllDrawings()
+
+//    @Query("SELECT * FROM Drawing ORDER BY id DESC LIMIT 1")
+//    fun getMostRecentDrawing(): Flow<Drawing?>
 }
