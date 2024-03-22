@@ -2,6 +2,7 @@ package com.example.finaldraw
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +15,13 @@ import androidx.navigation.fragment.findNavController
 class DrawFragment : Fragment() {
 
     private var defaultColor = Color.BLACK // Default color
+    private lateinit var binding: FragmentDrawBinding
+    val viewModel: SimpleViewModel by activityViewModels() {
+        DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)}
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentDrawBinding.inflate(inflater)
 
 
-//        val viewModel: SimpleViewModel by activityViewModels()
-
-        val viewModel: SimpleViewModel by activityViewModels() {
-            DrawingViewModelFactory((requireContext().applicationContext as DrawingApplication).drawingRepository)}
 
         fun saveCurrentDrawing() {
             val fileName = binding.customView.saveDrawingToFile(requireContext())
@@ -30,9 +30,9 @@ class DrawFragment : Fragment() {
             viewModel.addDrawing(drawing) // Assuming you have a method in your ViewModel to handle database operations
         }
 
-        fun loadDrawing() {
-            binding.customView.loadBitmapFromFile(requireContext(), "drawing_1711055080686.png")
-        }
+//        fun loadDrawing() {
+//            binding.customView.loadBitmapFromFile(requireContext(), "drawing_1711055080686.png")
+//        }
 
         binding.saveBut.setOnClickListener {
             saveCurrentDrawing()
@@ -40,12 +40,20 @@ class DrawFragment : Fragment() {
 
         binding.loadButton.setOnClickListener {
             findNavController().navigate(R.id.action_drawFragment_to_listFragment)
+            //viewModel.
             //loadDrawing()
+
         }
+
 
         // Observe pensize change
         viewModel.penSize.observe(viewLifecycleOwner) { size ->
             binding.customView.changePenSize(size)
+        }
+
+        //Oberser the file name
+        viewModel.fileName.observe(viewLifecycleOwner){ fileName1 ->
+            binding.customView.loadBitmapFromFile(fileName1)
         }
 
         // Observe pencolor change
@@ -75,6 +83,14 @@ class DrawFragment : Fragment() {
                 }
             }
         }
+
+//        val fileName = viewModel.myfileName
+//        if (fileName != null) {
+//            binding.customView.loadBitmapFromFile(fileName)
+//        }
+
+
+
         return binding.root
     }
 }

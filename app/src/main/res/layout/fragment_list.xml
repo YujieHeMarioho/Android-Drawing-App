@@ -5,22 +5,29 @@
     android:layout_height="match_parent"
     tools:context=".ListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hahhahahahhaah" />
+    <!-- TODO: Update blank fragment layout -->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="@string/hello_blank_fragment" />-->
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="384dp"
-        android:layout_height="111dp"
-        android:text="Button" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hahhahahahhaah" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button2"-->
+<!--        android:layout_width="384dp"-->
+<!--        android:layout_height="111dp"-->
+<!--        android:text="Button" />-->
+
+
 
 </FrameLayout>

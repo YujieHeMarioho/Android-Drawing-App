@@ -4,11 +4,12 @@ plugins {
     id("kotlin-kapt")
 
     //needed for automatic JSON serialization/deserialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    //id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     //for room
     id("com.google.devtools.ksp")
     // For navigaton
     //id("androidx.navigation.safeargs.kotlin")
+
 
 }
 
@@ -47,6 +48,10 @@ android {
 
     buildFeatures{
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 }
 
@@ -60,6 +65,8 @@ dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.compose.foundation:foundation-android:1.6.4")
+    implementation("androidx.compose.material3:material3-android:1.2.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -77,9 +84,9 @@ dependencies {
     implementation ("com.github.yukuku:ambilwarna:2.0.1")
     // Testing
     testImplementation ("junit:junit:4.13.2")
-    testImplementation ("org.mockito:mockito-core:3.11.2")
+    //testImplementation ("org.mockito:mockito-core:3.11.2")
     testImplementation ("org.mockito:mockito-inline:3.11.2")
-    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    //testImplementation ("androidx.arch.core:core-testing:2.1.0")
 
     // Room Stuff
     implementation("androidx.room:room-common:2.6.1")
@@ -92,10 +99,28 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
     implementation("io.ktor:ktor-client-cio:2.3.8")
     implementation("io.ktor:ktor-client-android:2.3.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    //implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     //Jetpack compose
 //    implementation ("androidx.compose.ui:ui:latest_version")
 //    implementation ("androidx.compose.material:material:latest_version")
 //    implementation ("androidx.activity:activity-compose:latest_version")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation(platform("androidx.compose:compose-bom:2024.02.02"))
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.navigation:navigation-common-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    //implementation(libs.androidx.material3.android)
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.02"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

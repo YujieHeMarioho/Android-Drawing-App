@@ -41,6 +41,8 @@ class ClickFragment : Fragment() {
 
         binding.colorPicker.setOnClickListener {
             openColorPicker()
+            //viewModel.deleteAllDrawings()
+
         }
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

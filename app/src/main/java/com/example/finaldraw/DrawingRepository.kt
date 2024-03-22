@@ -4,6 +4,8 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import com.example.finaldraw.Drawing
+
 
 class DrawingRepository(private val scope: CoroutineScope, private val dao: DrawingDao) {
 
@@ -12,5 +14,9 @@ class DrawingRepository(private val scope: CoroutineScope, private val dao: Draw
 
     suspend fun insertDrawing(drawing: Drawing) {
         dao.insert(drawing);
+    }
+
+    suspend fun deleteAllDrawings() {
+        dao.deleteAllDrawings()
     }
 }

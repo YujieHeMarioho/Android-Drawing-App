@@ -15,6 +15,7 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
     // Expose the flow provided by the dao, instantiated in the Repository
     val drawings: Flow<List<Drawing>> = repository.allDrawings
 
+
     fun addDrawing(drawing: Drawing) = viewModelScope.launch {
         repository.insertDrawing(drawing)
     }
@@ -34,6 +35,9 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
 
     private val _saveDrawingEvent = MutableLiveData<Boolean>()
     val saveDrawingEvent: LiveData<Boolean> = _saveDrawingEvent
+
+    private val _fileName = MutableLiveData<String>()
+    val fileName: LiveData<String> = _fileName
 
     fun triggerSaveDrawing() {
         _saveDrawingEvent.value = true;
@@ -59,6 +63,22 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
     fun resetReadyToDraw() {
         _isReadyToDraw.value = false
     }
+
+    fun setFileName(name: String) {
+        _fileName.value = name // This will notify observers
+    }
+//    fun string getSelectedFileName{
+//        return fileName;
+//    }
+
+    fun deleteAllDrawings() = viewModelScope.launch {
+        repository.deleteAllDrawings()
+        // Now, delete all files from internal storage
+        //deleteAllFilesFromInternalStorage()
+    }
+
+    //fun getAllDrawings(): Flow<List<Drawing>> =
+
 }
 
 class Event<out T>(private val content: T) {

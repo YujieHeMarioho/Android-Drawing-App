@@ -123,7 +123,7 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 //        }
 //    }
 
-    fun loadBitmapFromFile(context: Context, fileName: String) {
+    fun loadBitmapFromFile(fileName: String) {
         val file = File(context.filesDir, fileName)
         if (file.exists()) {
             val options = BitmapFactory.Options().apply {

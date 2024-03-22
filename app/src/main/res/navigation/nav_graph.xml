@@ -15,6 +15,8 @@
         android:name="com.example.finaldraw.ClickFragment"
         android:label="fragment_click"
         tools:layout="@layout/fragment_click" />
+
+
     <fragment
         android:id="@+id/drawFragment"
         android:name="com.example.finaldraw.DrawFragment"
@@ -23,10 +25,16 @@
         <action
             android:id="@+id/action_drawFragment_to_listFragment"
             app:destination="@id/listFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.finaldraw.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_drawFragment"
+            app:destination="@id/drawFragment" />
+    </fragment>
 </navigation>
