@@ -1,7 +1,7 @@
 package com.example.finaldraw
 
 import android.graphics.Color
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import org.junit.Rule
 import org.junit.Test
@@ -15,7 +15,7 @@ import org.mockito.kotlin.times
 class SimpleViewModelTest {
 
     @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+    //var instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: SimpleViewModel
 
@@ -28,7 +28,6 @@ class SimpleViewModelTest {
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
-        viewModel = SimpleViewModel()
     }
 
     @Test
