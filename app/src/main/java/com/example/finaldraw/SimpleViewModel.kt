@@ -71,6 +71,10 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
         _penSize.value = size
     }
 
+    fun eraserColor() {
+        _penColor.value = Color.WHITE
+    }
+
     // Call this method to reset readiness (after drawing a circle, for example)
     fun resetReadyToDraw() {
         _isReadyToDraw.value = false

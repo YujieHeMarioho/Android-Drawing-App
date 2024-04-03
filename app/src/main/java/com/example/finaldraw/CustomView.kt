@@ -144,6 +144,7 @@ override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
                 if (::bitmap.isInitialized && bitmap != newBitmap && !bitmap.isRecycled) {
                     bitmap.recycle()
                 }
+
                 bitmap = newBitmap
                 bitmapCanvas = Canvas(bitmap)
                 invalidate()

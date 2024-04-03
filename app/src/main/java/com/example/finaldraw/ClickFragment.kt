@@ -45,7 +45,10 @@ class ClickFragment : Fragment() {
 
         binding.colorPicker.setOnClickListener {
             openColorPicker()
+        }
 
+        binding.Eraser.setOnClickListener {
+            viewModel.eraserColor()
         }
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
