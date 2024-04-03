@@ -45,7 +45,8 @@ class ListFragment : Fragment() {
                 val navController = findNavController()
                 DrawingListScreen(viewModel = viewModel, navController = navController) { fileName ->
                     // Set the fileName in the shared ViewModel
-                    findNavController().navigate(R.id.action_listFragment_to_drawFragment)
+                    //findNavController().navigate(R.id.action_listFragment_to_drawFragment)
+                    findNavController().popBackStack()
                     viewModel.setFileName(fileName)
                 }
             }
