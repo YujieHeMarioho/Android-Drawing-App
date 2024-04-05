@@ -21,12 +21,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.fragment.app.activityViewModels
@@ -52,18 +56,62 @@ class ListFragment : Fragment() {
             }
         }
     }
+    /*
+    The UI of List fragment include all related buttons and drawings
+     */
     @Composable
     fun DrawingListScreen(viewModel: SimpleViewModel, navController: NavController, onDrawingClick: (String) -> Unit) {
         val context = LocalContext.current
+        val showDeleteConfirmationDialog = remember { mutableStateOf(false) }
+
+        if (showDeleteConfirmationDialog.value) {
+            // Confirmation info for Deleting
+            AlertDialog(
+                onDismissRequest = {
+                    showDeleteConfirmationDialog.value = false
+                },
+                title = { Text("Confirm Deletion") },
+                text = { Text("Are you sure you want to delete all drawings?") },
+                confirmButton = {
+                    //Delete all button for deleting all drawings
+                    TextButton(
+                        onClick = {
+                            viewModel.deleteAllDrawings()
+                            showDeleteConfirmationDialog.value = false
+                        }
+                        //Delete choice
+                    ) {
+                        Text("Delete")
+                    }
+                },
+                //Cancle choice
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showDeleteConfirmationDialog.value = false
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
+
         Column {
-            Button(onClick = { navController.navigateUp() }) {
+            //Back Button
+            Button(onClick = { findNavController().popBackStack() }) {
                 Text(text = "Back")
             }
 
+            // Delete all button
+            Button(onClick = { showDeleteConfirmationDialog.value = true }) {
+                Text(text = "Delete All")
+            }
+            //Drawings list
             val drawings by viewModel.drawings.collectAsState(initial = listOf())
             LazyColumn {
                 items(items = drawings, key = { drawing -> drawing.id }) { drawing ->
-                    ListItem(drawing = drawing, onDrawingClick = onDrawingClick)
+                    ListItem(drawing, onDrawingClick)
                 }
             }
         }
@@ -92,6 +140,7 @@ class ListFragment : Fragment() {
             }
         }
     }
+
 }
 
 

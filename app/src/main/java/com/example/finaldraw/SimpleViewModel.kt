@@ -32,6 +32,14 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
         repository.deleteDrawing(drawing)
     }
 
+    //delete all list
+    fun deleteAllDrawings() {
+        viewModelScope.launch {
+            repository.deleteAllDrawings()
+        }
+    }
+
+
     private val _colorEvent = MutableLiveData<Event<Color>>()
     val colorEvent: LiveData<Event<Color>> = _colorEvent
 
