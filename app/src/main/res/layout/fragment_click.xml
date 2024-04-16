@@ -36,6 +36,9 @@
             android:id="@+id/seekBar"
             android:layout_width="131dp"
             android:layout_height="match_parent" />
+
     </LinearLayout>
+
+
 
 </LinearLayout>

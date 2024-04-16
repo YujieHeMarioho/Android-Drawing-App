@@ -88,6 +88,14 @@ class DrawFragment : Fragment() {
             }
         }
 
+        _binding?.buttonAddNoise?.setOnClickListener {
+            _binding?.customView?.applyNoise()
+        }
+
+        _binding?.buttonInvertColors?.setOnClickListener {
+            _binding?.customView?.applyInvertColors()
+        }
+
         return binding.root
     }
 

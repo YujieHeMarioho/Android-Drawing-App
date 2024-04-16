@@ -26,6 +26,16 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var tempBitmap: Bitmap? = null
 
     init {
+        System.loadLibrary("finaldraw")
+    }
+
+    private external fun addNoise(bitmap: Bitmap)
+    private external fun invertColors(bitmap: Bitmap)init {
+        System.loadLibrary("finaldraw")
+    }
+
+
+    init {
         paint.color = Color.BLACK
         paint.style = Paint.Style.STROKE
         paint.strokeJoin = Paint.Join.ROUND
@@ -153,4 +163,22 @@ override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
             }
         }
     }
+
+
+
+    fun applyNoise() {
+        if (::bitmap.isInitialized) {
+            addNoise(bitmap) // This calls the native method
+            invalidate() // Redraws the view
+        }
+    }
+
+    fun applyInvertColors() {
+        if (::bitmap.isInitialized) {
+            invertColors(bitmap) // This calls the native method
+            invalidate() // Redraws the view
+        }
+    }
+
+
 }

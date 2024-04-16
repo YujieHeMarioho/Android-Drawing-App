@@ -28,6 +28,18 @@
             android:layout_weight="0"
             android:text="Load" />
 
+        <Button
+            android:id="@+id/button_add_noise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Noise" />
+
+        <Button
+            android:id="@+id/button_invert_colors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Invert Colors" />
+
     </LinearLayout>
 
 </FrameLayout>
