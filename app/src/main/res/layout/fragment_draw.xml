@@ -10,36 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="63dp">
 
-        <Button
-            android:id="@+id/saveBut"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/loadButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Load" />
+            <Button
+                android:id="@+id/saveBut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save" />
 
-        <Button
-            android:id="@+id/button_add_noise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Noise" />
+            <Button
+                android:id="@+id/loadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Load" />
 
-        <Button
-            android:id="@+id/button_invert_colors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Invert Colors" />
+            <Button
+                android:id="@+id/button_add_noise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Noise" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_invert_colors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Invert Colors" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </FrameLayout>

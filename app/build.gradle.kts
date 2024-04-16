@@ -7,6 +7,7 @@ plugins {
     //id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     //for room
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
     // For navigaton
     //id("androidx.navigation.safeargs.kotlin")
 
@@ -78,6 +79,13 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("androidx.compose.foundation:foundation-android:1.6.4")
     implementation("androidx.compose.material3:material3-android:1.2.1")
+
+    // Firebase
+    implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+//    implementation(libs.firebase.common.ktx)
+//    implementation(libs.firebase.auth.ktx)
+//    implementation(libs.firebase.firestore.ktx)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

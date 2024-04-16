@@ -11,7 +11,7 @@
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="592dp"
+        android:layout_height="654dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
@@ -19,7 +19,7 @@
         android:id="@+id/toolFragmentView"
         android:name="com.example.finaldraw.ClickFragment"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="75dp" />
 
 
 </LinearLayout>
