@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "5381155673",
+    "project_id": "finaldraw-4e33c",
+    "storage_bucket": "finaldraw-4e33c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5381155673:android:5336719e29af83fbae3a48",
+        "android_client_info": {
+          "package_name": "com.example.finaldraw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkNjr4J4pXi8AJfurLYSqKKD0mWV9B_yc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

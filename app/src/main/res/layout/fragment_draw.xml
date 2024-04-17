@@ -33,6 +33,13 @@
                 android:text="Load" />
 
             <Button
+                android:id="@+id/loginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Login" />
+
+            <Button
                 android:id="@+id/button_add_noise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

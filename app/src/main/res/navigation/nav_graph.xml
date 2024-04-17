@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_drawFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_drawFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
 
     </fragment>
 
@@ -37,4 +40,13 @@
             android:id="@+id/action_listFragment_to_drawFragment"
             app:destination="@id/drawFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.finaldraw.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_drawFragment"
+            app:destination="@id/drawFragment" />
+    </fragment>
+
 </navigation>

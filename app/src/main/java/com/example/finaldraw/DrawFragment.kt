@@ -5,26 +5,17 @@
  */
 package com.example.finaldraw
 
+
+
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.finaldraw.databinding.FragmentDrawBinding
 import androidx.navigation.fragment.findNavController
-
-
-
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.example.finaldraw.databinding.FragmentDrawBinding
 
 class DrawFragment : Fragment() {
 
@@ -54,6 +45,9 @@ class DrawFragment : Fragment() {
             findNavController().navigate(R.id.action_drawFragment_to_listFragment)
         }
 
+        binding.loginButton.setOnClickListener {
+            findNavController().navigate(R.id.action_drawFragment_to_loginFragment)
+        }
 
         // Observe pensize change
         viewModel.penSize.observe(viewLifecycleOwner) { size ->
