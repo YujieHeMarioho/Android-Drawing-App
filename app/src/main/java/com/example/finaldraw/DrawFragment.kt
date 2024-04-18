@@ -7,6 +7,7 @@ package com.example.finaldraw
 
 
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.finaldraw.databinding.FragmentDrawBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class DrawFragment : Fragment() {
 
@@ -29,6 +32,14 @@ class DrawFragment : Fragment() {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDrawBinding.inflate(inflater)
+
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            // User is signed in, navigate directly to the DrawFragment or the main content area
+            binding.loginText.text = "logged in as: " + user.email
+        } else {
+            binding.loginText.text = "Not logged in"
+        }
 
         fun saveCurrentDrawing() {
             val fileName = binding.customView.saveDrawingToFile(requireContext())
@@ -46,7 +57,26 @@ class DrawFragment : Fragment() {
         }
 
         binding.loginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawFragment_to_loginFragment)
+            val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+            if (user == null)
+                findNavController().navigate(R.id.action_drawFragment_to_loginFragment)
+            else
+            {
+                AlertDialog.Builder(context)
+                    .setTitle("You are already Logged In as: " + user.email)
+                    .setMessage("Click anywhere to cancel.")
+                    .setPositiveButton("OK") { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton("Log Out") { dialog, which ->
+                        FirebaseAuth.getInstance().signOut() // Log out the user
+                        binding.loginText.text = "Not Logged In" // Set text to logged out
+                        dialog.dismiss()
+//                        findNavController().navigate(R.id.action_drawFragment_to_loginFragment)
+                    }
+                    .create()
+                    .show()
+            }
         }
 
         // Observe pensize change
