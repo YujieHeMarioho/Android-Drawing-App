@@ -61,11 +61,29 @@ class DrawFragment : Fragment() {
             val data = byteArrayOutputStream.toByteArray()
 
             val storageRef = Firebase.storage.reference
-            val fileRef = storageRef.child("${user!!.uid}/fileName")
+            val fileRef = storageRef.child("${user!!.uid}/" + fileName)
             var uploadTask = fileRef.putBytes(data)
                 uploadTask
-                .addOnFailureListener{ e -> Log.e("PICUPLOAD", "Failed !$e")}
-                .addOnSuccessListener { Log.e("PICUPLOAD", "Success!") }
+                .addOnFailureListener{
+                    AlertDialog.Builder(context)
+                        .setTitle("Failure")
+                        .setMessage("There was a problem when adding your drawing to the firebase")
+                        .setPositiveButton("OK") { dialog, which ->
+                            dialog.dismiss() // close the dialog
+                        }
+                        .create()
+                        .show()
+                }
+                .addOnSuccessListener {
+                    AlertDialog.Builder(context)
+                        .setTitle("Success")
+                        .setMessage("Your drawing has been added to the firebase")
+                        .setPositiveButton("OK") { dialog, which ->
+                            dialog.dismiss() // close the dialog
+                        }
+                        .create()
+                        .show()
+                }
         }
 
         binding.saveBut.setOnClickListener {
@@ -87,16 +105,15 @@ class DrawFragment : Fragment() {
             else
             {
                 AlertDialog.Builder(context)
-                    .setTitle("You are already Logged In as: " + user.email)
+                    .setTitle("You are already Logged in as: " + user.email)
                     .setMessage("Click anywhere to cancel.")
                     .setPositiveButton("OK") { dialog, which ->
-                        dialog.dismiss()
+                        dialog.dismiss() // close the dialog
                     }
-                    .setPositiveButton("Log Out") { dialog, which ->
+                    .setNegativeButton("Log Out") { dialog, which ->
                         FirebaseAuth.getInstance().signOut() // Log out the user
                         binding.loginText.text = "Not Logged In" // Set text to logged out
                         dialog.dismiss()
-//                        findNavController().navigate(R.id.action_drawFragment_to_loginFragment)
                     }
                     .create()
                     .show()
