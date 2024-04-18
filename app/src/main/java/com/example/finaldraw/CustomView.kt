@@ -34,6 +34,9 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         System.loadLibrary("finaldraw")
     }
 
+    fun getBitmap(): Bitmap {
+        return bitmap
+    }
 
     init {
         paint.color = Color.BLACK
@@ -140,7 +143,6 @@ override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         }
         return fileName // Return the file name for storing in the database
     }
-
 
     fun loadBitmapFromFile(context: Context, fileName: String) {
         val file = File(context.filesDir, fileName)

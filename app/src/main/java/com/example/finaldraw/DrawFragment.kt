@@ -8,8 +8,10 @@ package com.example.finaldraw
 
 
 import android.app.AlertDialog
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +19,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.finaldraw.databinding.FragmentDrawBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.storage
+import java.io.ByteArrayOutputStream
 
 class DrawFragment : Fragment() {
 
@@ -48,8 +53,27 @@ class DrawFragment : Fragment() {
             viewModel.addDrawing(drawing) // Assuming you have a method in your ViewModel to handle database operations
         }
 
+        fun saveDrawingToFirebase() {
+            val fileName = "drawing_${System.currentTimeMillis()}.png"
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            val bitmap = binding.customView.getBitmap()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val data = byteArrayOutputStream.toByteArray()
+
+            val storageRef = Firebase.storage.reference
+            val fileRef = storageRef.child("${user!!.uid}/fileName")
+            var uploadTask = fileRef.putBytes(data)
+                uploadTask
+                .addOnFailureListener{ e -> Log.e("PICUPLOAD", "Failed !$e")}
+                .addOnSuccessListener { Log.e("PICUPLOAD", "Success!") }
+        }
+
         binding.saveBut.setOnClickListener {
             saveCurrentDrawing()
+        }
+
+        binding.SaveCloud.setOnClickListener {
+            saveDrawingToFirebase()
         }
 
         binding.loadButton.setOnClickListener {
@@ -122,7 +146,6 @@ class DrawFragment : Fragment() {
 
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
