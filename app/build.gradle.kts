@@ -69,7 +69,11 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.test:runner:1.5.2")
+    implementation("androidx.test:rules:1.5.0")
+
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -77,14 +81,15 @@ dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-    implementation("androidx.compose.foundation:foundation-android:1.6.4")
+    implementation("androidx.compose.foundation:foundation-android:1.6.6")
     implementation("androidx.compose.material3:material3-android:1.2.1")
 
     // Firebase
     implementation("com.google.firebase:firebase-storage:20.3.0")
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
 //    implementation(libs.firebase.common.ktx)
 //    implementation(libs.firebase.auth.ktx)
 //    implementation(libs.firebase.firestore.ktx)
@@ -95,7 +100,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //to get livedata + viewmodel stuff
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("6androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
@@ -127,10 +132,10 @@ dependencies {
 //    implementation ("androidx.compose.ui:ui:latest_version")
 //    implementation ("androidx.compose.material:material:latest_version")
 //    implementation ("androidx.activity:activity-compose:latest_version")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.02.02"))
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.navigation:navigation-common-ktx:2.7.7")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -141,11 +146,14 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.02"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.6")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("com.google.firebase:firebase-auth:22.3.1")
+
+
 
 }

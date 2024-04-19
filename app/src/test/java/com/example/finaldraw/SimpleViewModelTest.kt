@@ -1,16 +1,13 @@
 package com.example.finaldraw
 
-import android.graphics.Color
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.Before
 import org.mockito.Mock
-import org.mockito.kotlin.any
 import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 class SimpleViewModelTest {
 
@@ -45,4 +42,5 @@ class SimpleViewModelTest {
         viewModel.changePenColor(testColor)
         verify(colorObserver, times(1)).onChanged(testColor)
     }
+
 }
