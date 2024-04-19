@@ -9,6 +9,7 @@ package com.example.finaldraw
 
 import android.app.AlertDialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -206,6 +207,29 @@ class DrawFragment : Fragment() {
 
         viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
             binding.customView.loadBitmapFromFile(requireContext(),fileName)
+        }
+
+        viewModel.imagePath.observe(viewLifecycleOwner) { path ->
+            loadImage(path)
+        }
+    }
+
+    private fun loadImage(imagePath: String) {
+        // load an image from Firebase Storage
+        val storageRef = Firebase.storage.reference.child(imagePath)
+
+        // Make sure we can edit Bitmap
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+        }
+        storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+
+            // Update the customView with this bitmap
+            binding.customView.setBitmap(bmp)
+
+        }.addOnFailureListener {
+            // Handle any errors
         }
     }
 

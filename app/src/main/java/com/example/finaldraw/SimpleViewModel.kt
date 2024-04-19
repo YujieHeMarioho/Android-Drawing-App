@@ -59,6 +59,9 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
     private val _fileName = MutableLiveData<String>()
     val fileName: LiveData<String> = _fileName
 
+    private val _imagePath = MutableLiveData<String>()
+    val imagePath: LiveData<String> = _imagePath
+
     fun triggerSaveDrawing() {
         _saveDrawingEvent.value = true;
     }
@@ -88,11 +91,17 @@ class SimpleViewModel(private val repository: DrawingRepository) : ViewModel() {
         _isReadyToDraw.value = false
     }
 
+    // This is for the local database
     fun setFileName(name: String) {
         _fileName.value = name // This will notify observers
 
-        }
     }
+
+    // This is for the firebase storage
+    fun setImagePath(path: String) {
+        _imagePath.value = path
+    }
+}
 
 class Event<out T>(private val content: T) {
     var hasBeenHandled = false

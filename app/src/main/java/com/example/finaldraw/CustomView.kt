@@ -38,6 +38,18 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return bitmap
     }
 
+    fun setBitmap(newBitmap: Bitmap)
+    {
+        // Recycle the old bitmap if it is initialized and different from the new bitmap
+        if (::bitmap.isInitialized && bitmap != newBitmap && !bitmap.isRecycled) {
+            bitmap.recycle()
+        }
+
+        bitmap = newBitmap
+        bitmapCanvas = Canvas(bitmap)
+        invalidate()
+    }
+
     init {
         paint.color = Color.BLACK
         paint.style = Paint.Style.STROKE
@@ -165,8 +177,6 @@ override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
             }
         }
     }
-
-
 
     fun applyNoise() {
         if (::bitmap.isInitialized) {

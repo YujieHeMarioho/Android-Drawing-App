@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -26,6 +27,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -38,7 +41,29 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
+data class DrawingData(
+    val fileName: String,
+    val filePath: String
+)
+//class FirebaseFragment : Fragment() {
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        return ComposeView(requireContext()).apply {
+//            setContent {
+//                val navController = findNavController()
+//                FileNameListScreen()
+//            }
+//        }
+//    }
+//}
+
 class FirebaseFragment : Fragment() {
+    private val viewModel: SimpleViewModel by activityViewModels() {
+        DrawingViewModelFactory((requireActivity().application as DrawingApplication).drawingRepository)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,13 +71,13 @@ class FirebaseFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val navController = findNavController()
-                FileNameListScreen()
+                FileNameListScreen(navController, viewModel)
             }
         }
     }
 }
 
-private fun fetchDrawingsFromFirestore(): Flow<List<String>> = flow {
+private fun fetchDrawingsFromFirestore(): Flow<List<DrawingData>> = flow {
     try {
         val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
         val snapshot = Firebase.firestore.collection("userCollection")
@@ -60,36 +85,69 @@ private fun fetchDrawingsFromFirestore(): Flow<List<String>> = flow {
             .collection("drawings")
             .get()
             .await()
-        val fileNames = snapshot.documents.mapNotNull { document ->
-            document.getString("fileName")
+        val drawings = snapshot.documents.mapNotNull { document ->
+            val fileName = document.getString("fileName")
+            val filePath = document.getString("filePath")
+            if (fileName != null && filePath != null) {
+                DrawingData(fileName, filePath)
+            } else {
+                null
+            }
         }
-        emit(fileNames)
+        emit(drawings)
     } catch (e: Exception) {
         Log.e("Firestore", "Error getting documents: ", e)
-        emit(emptyList<String>())
+        emit(emptyList<DrawingData>())
     }
 }
 
+//@Composable
+//fun ListItem(fileName: String) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(16.dp)
+//            .clickable { /* Handle click to potentially load bitmap in the future */ }
+//    ) {
+//        Text(text = fileName, style = MaterialTheme.typography.bodyLarge)
+//    }
+//}
+
 @Composable
-fun ListItem(fileName: String) {
+fun ListItem(drawingData: DrawingData, onItemClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable { /* Handle click to potentially load bitmap in the future */ }
+            .clickable { onItemClick(drawingData.filePath) }
     ) {
-        Text(text = fileName, style = MaterialTheme.typography.bodyLarge)
+        Text(text = drawingData.fileName, style = MaterialTheme.typography.bodyLarge)
     }
 }
 
+//@Composable
+//fun FileNameListScreen() {
+//    val fileNameFlow = fetchDrawingsFromFirestore()
+//    val fileNames by fileNameFlow.collectAsState(initial = listOf())
+//
+//    LazyColumn {
+//        items(fileNames) { fileName ->
+//            ListItem(fileName)
+//        }
+//    }
+//}
+
 @Composable
-fun FileNameListScreen() {
-    val fileNameFlow = fetchDrawingsFromFirestore()
-    val fileNames by fileNameFlow.collectAsState(initial = listOf())
+fun FileNameListScreen(navController: NavController, viewModel: SimpleViewModel) {
+    val drawingDataFlow = fetchDrawingsFromFirestore()
+    val drawingData by drawingDataFlow.collectAsState(initial = listOf())
 
     LazyColumn {
-        items(fileNames) { fileName ->
-            ListItem(fileName)
+        items(drawingData) { drawingDataItem ->
+            ListItem(drawingDataItem) { selectedFilePath ->
+                viewModel.setImagePath(selectedFilePath)
+                navController.popBackStack() // Adjust according to your navigation graph ID
+            }
         }
     }
 }
