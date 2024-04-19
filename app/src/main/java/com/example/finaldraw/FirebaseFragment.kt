@@ -45,19 +45,6 @@ data class DrawingData(
     val fileName: String,
     val filePath: String
 )
-//class FirebaseFragment : Fragment() {
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return ComposeView(requireContext()).apply {
-//            setContent {
-//                val navController = findNavController()
-//                FileNameListScreen()
-//            }
-//        }
-//    }
-//}
 
 class FirebaseFragment : Fragment() {
     private val viewModel: SimpleViewModel by activityViewModels() {
@@ -101,18 +88,6 @@ private fun fetchDrawingsFromFirestore(): Flow<List<DrawingData>> = flow {
     }
 }
 
-//@Composable
-//fun ListItem(fileName: String) {
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(16.dp)
-//            .clickable { /* Handle click to potentially load bitmap in the future */ }
-//    ) {
-//        Text(text = fileName, style = MaterialTheme.typography.bodyLarge)
-//    }
-//}
-
 @Composable
 fun ListItem(drawingData: DrawingData, onItemClick: (String) -> Unit) {
     Row(
@@ -124,19 +99,6 @@ fun ListItem(drawingData: DrawingData, onItemClick: (String) -> Unit) {
         Text(text = drawingData.fileName, style = MaterialTheme.typography.bodyLarge)
     }
 }
-
-//@Composable
-//fun FileNameListScreen() {
-//    val fileNameFlow = fetchDrawingsFromFirestore()
-//    val fileNames by fileNameFlow.collectAsState(initial = listOf())
-//
-//    LazyColumn {
-//        items(fileNames) { fileName ->
-//            ListItem(fileName)
-//        }
-//    }
-//}
-
 @Composable
 fun FileNameListScreen(navController: NavController, viewModel: SimpleViewModel) {
     val drawingDataFlow = fetchDrawingsFromFirestore()
