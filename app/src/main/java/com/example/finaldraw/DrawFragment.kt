@@ -22,8 +22,10 @@ import com.example.finaldraw.databinding.FragmentDrawBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
+import com.google.firebase.firestore.ktx.firestore
 
 class DrawFragment : Fragment() {
 
@@ -60,11 +62,11 @@ class DrawFragment : Fragment() {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
             val data = byteArrayOutputStream.toByteArray()
 
+            var path = "${user!!.uid}/" + fileName
             val storageRef = Firebase.storage.reference
-            val fileRef = storageRef.child("${user!!.uid}/" + fileName)
+            val fileRef = storageRef.child(path)
             var uploadTask = fileRef.putBytes(data)
-                uploadTask
-                .addOnFailureListener{
+            uploadTask.addOnFailureListener{
                     AlertDialog.Builder(context)
                         .setTitle("Failure")
                         .setMessage("There was a problem when adding your drawing to the firebase")
@@ -75,14 +77,40 @@ class DrawFragment : Fragment() {
                         .show()
                 }
                 .addOnSuccessListener {
-                    AlertDialog.Builder(context)
-                        .setTitle("Success")
-                        .setMessage("Your drawing has been added to the firebase")
-                        .setPositiveButton("OK") { dialog, which ->
-                            dialog.dismiss() // close the dialog
+                    // After the upload is successful, save the reference to Firestore
+                    val firestoreRef = Firebase.firestore
+                        .collection("userCollection")
+                        .document(user!!.uid)
+                        .collection("drawings")
+                        .document()  // This creates a new document with a unique ID
+
+                    val drawingInfo = hashMapOf(
+                        "fileName" to fileName,
+                        "filePath" to path,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    firestoreRef.set(drawingInfo)
+                        .addOnSuccessListener {
+                            AlertDialog.Builder(context)
+                                .setTitle("Success")
+                                .setMessage("Your drawing has been added to Firebase and referenced in Firestore.")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    dialog.dismiss()
+                                }
+                                .create()
+                                .show()
                         }
-                        .create()
-                        .show()
+                        .addOnFailureListener { e ->
+                            AlertDialog.Builder(context)
+                                .setTitle("Failure")
+                                .setMessage("Failed to create a reference in Firestore: ${e.message}")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    dialog.dismiss()
+                                }
+                                .create()
+                                .show()
+                        }
                 }
         }
 
@@ -95,7 +123,17 @@ class DrawFragment : Fragment() {
         }
 
         binding.loadButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawFragment_to_listFragment)
+            val options = arrayOf("Load Local", "Load Firebase")
+            // Create and show the AlertDialog
+            AlertDialog.Builder(requireContext())
+                .setTitle("Choose Load Option")
+                .setItems(options) { dialog, which ->
+                    when (which) {
+                        0 -> findNavController().navigate(R.id.action_drawFragment_to_listFragment) // User chooses "Load Local"
+                        1 -> findNavController().navigate(R.id.action_drawFragment_to_firebaseFragment) // User chooses "Load Firebase"
+                    }
+                }
+                .show()
         }
 
         binding.loginButton.setOnClickListener {

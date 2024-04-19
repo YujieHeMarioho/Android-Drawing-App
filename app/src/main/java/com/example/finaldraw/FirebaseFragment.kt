@@ -1,81 +1,96 @@
-//package com.example.finaldraw
-//
-//import android.os.Bundle
-//import android.util.Log
-//import androidx.fragment.app.Fragment
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.lazy.LazyColumn
-//import androidx.compose.material3.MaterialTheme
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.platform.ComposeView
-//import androidx.lifecycle.MutableLiveData
-//import androidx.navigation.fragment.findNavController
-//import com.google.firebase.Firebase
-//import com.google.firebase.firestore.firestore
-//import com.google.firebase.firestore.ktx.firestore
-//
-//
-//class FirebaseFragment : Fragment() {
-//    private val drawingsLiveData = MutableLiveData<List<Drawing>>()
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return ComposeView(requireContext()).apply {
-//            setContent {
-//                DrawingListScreen(drawingsLiveData) { fileName ->
-//                    // When a drawing is clicked, navigate back and pass the fileName to DrawFragment
-//                    findNavController().previousBackStackEntry?.savedStateHandle?.set("fileName", fileName)
-//                    findNavController().popBackStack()
-//                }
-//            }
-//            fetchDrawingsFromFirestore()
-//        }
-//    }
-//
-//    private fun fetchDrawingsFromFirestore() {
-//        Firebase.firestore.collection("drawings")
-//            .get()
-//            .addOnSuccessListener { documents ->
-//                val drawings = documents.map { document ->
-//                    Drawing(document.id, document.getString("fileName") ?: "No Name")
-//                }
-//                drawingsLiveData.value = drawings
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.e("Firestore", "Error getting documents: ", exception)
-//            }
-//    }
-//
-//    @Composable
-//    fun DrawingListScreen(drawingsLiveData: MutableLiveData<List<Drawing>>, onDrawingClick: (String) -> Unit) {
-//        val drawings by drawingsLiveData.observeAsState(initial = listOf())
-//
-//        Column {
-//            Text("Select a Drawing", style = MaterialTheme.typography.h6, modifier = Modifier.padding(16.dp))
-//            LazyColumn {
-//                items(items = drawings, key = { drawing -> drawing.id }) { drawing ->
-//                    ListItem(drawing, onDrawingClick)
-//                }
-//            }
-//        }
-//    }
-//
-//    @Composable
-//    fun ListItem(drawing: Drawing, onDrawingClick: (String) -> Unit) {
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//                .clickable { onDrawingClick(drawing.fileName) }
-//        ) {
-//            Text(text = drawing.fileName, modifier = Modifier.weight(1f))
-//            Icon(Icons.Filled.ArrowForward, contentDescription = "Load Drawing")
-//        }
-//    }
-//}
+package com.example.finaldraw
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+
+class FirebaseFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                val navController = findNavController()
+                FileNameListScreen()
+            }
+        }
+    }
+}
+
+private fun fetchDrawingsFromFirestore(): Flow<List<String>> = flow {
+    try {
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        val snapshot = Firebase.firestore.collection("userCollection")
+            .document(user!!.uid)
+            .collection("drawings")
+            .get()
+            .await()
+        val fileNames = snapshot.documents.mapNotNull { document ->
+            document.getString("fileName")
+        }
+        emit(fileNames)
+    } catch (e: Exception) {
+        Log.e("Firestore", "Error getting documents: ", e)
+        emit(emptyList<String>())
+    }
+}
+
+@Composable
+fun ListItem(fileName: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable { /* Handle click to potentially load bitmap in the future */ }
+    ) {
+        Text(text = fileName, style = MaterialTheme.typography.bodyLarge)
+    }
+}
+
+@Composable
+fun FileNameListScreen() {
+    val fileNameFlow = fetchDrawingsFromFirestore()
+    val fileNames by fileNameFlow.collectAsState(initial = listOf())
+
+    LazyColumn {
+        items(fileNames) { fileName ->
+            ListItem(fileName)
+        }
+    }
+}
+
