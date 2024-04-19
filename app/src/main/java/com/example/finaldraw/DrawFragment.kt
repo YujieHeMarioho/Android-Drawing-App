@@ -5,26 +5,28 @@
  */
 package com.example.finaldraw
 
+
+
+import android.app.AlertDialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.finaldraw.databinding.FragmentDrawBinding
 import androidx.navigation.fragment.findNavController
-
-
-
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.example.finaldraw.databinding.FragmentDrawBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
+import java.io.ByteArrayOutputStream
+import com.google.firebase.firestore.ktx.firestore
 
 class DrawFragment : Fragment() {
 
@@ -39,6 +41,14 @@ class DrawFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDrawBinding.inflate(inflater)
 
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            // User is signed in, navigate directly to the DrawFragment or the main content area
+            binding.loginText.text = "logged in as: " + user.email
+        } else {
+            binding.loginText.text = "Not logged in"
+        }
+
         fun saveCurrentDrawing() {
             val fileName = binding.customView.saveDrawingToFile(requireContext())
             // Now save this fileName along with any other necessary details to the database
@@ -46,14 +56,108 @@ class DrawFragment : Fragment() {
             viewModel.addDrawing(drawing) // Assuming you have a method in your ViewModel to handle database operations
         }
 
+        fun saveDrawingToFirebase() {
+            val fileName = "drawing_${System.currentTimeMillis()}.png"
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            val bitmap = binding.customView.getBitmap()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val data = byteArrayOutputStream.toByteArray()
+
+            var path = "${user!!.uid}/" + fileName
+            val storageRef = Firebase.storage.reference
+            val fileRef = storageRef.child(path)
+            var uploadTask = fileRef.putBytes(data)
+            uploadTask.addOnFailureListener{
+                    AlertDialog.Builder(context)
+                        .setTitle("Failure")
+                        .setMessage("There was a problem when adding your drawing to the firebase")
+                        .setPositiveButton("OK") { dialog, which ->
+                            dialog.dismiss() // close the dialog
+                        }
+                        .create()
+                        .show()
+                }
+                .addOnSuccessListener {
+                    // After the upload is successful, save the reference to Firestore
+                    val firestoreRef = Firebase.firestore
+                        .collection("userCollection")
+                        .document(user!!.uid)
+                        .collection("drawings")
+                        .document()  // This creates a new document with a unique ID
+
+                    val drawingInfo = hashMapOf(
+                        "fileName" to fileName,
+                        "filePath" to path,
+                        "timestamp" to System.currentTimeMillis()
+                    )
+
+                    firestoreRef.set(drawingInfo)
+                        .addOnSuccessListener {
+                            AlertDialog.Builder(context)
+                                .setTitle("Success")
+                                .setMessage("Your drawing has been added to Firebase and referenced in Firestore.")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    dialog.dismiss()
+                                }
+                                .create()
+                                .show()
+                        }
+                        .addOnFailureListener { e ->
+                            AlertDialog.Builder(context)
+                                .setTitle("Failure")
+                                .setMessage("Failed to create a reference in Firestore: ${e.message}")
+                                .setPositiveButton("OK") { dialog, which ->
+                                    dialog.dismiss()
+                                }
+                                .create()
+                                .show()
+                        }
+                }
+        }
+
         binding.saveBut.setOnClickListener {
             saveCurrentDrawing()
         }
 
-        binding.loadButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawFragment_to_listFragment)
+        binding.SaveCloud.setOnClickListener {
+            saveDrawingToFirebase()
         }
 
+        binding.loadButton.setOnClickListener {
+            val options = arrayOf("Load Local", "Load Firebase")
+            // Create and show the AlertDialog
+            AlertDialog.Builder(requireContext())
+                .setTitle("Choose Load Option")
+                .setItems(options) { dialog, which ->
+                    when (which) {
+                        0 -> findNavController().navigate(R.id.action_drawFragment_to_listFragment) // User chooses "Load Local"
+                        1 -> findNavController().navigate(R.id.action_drawFragment_to_firebaseFragment) // User chooses "Load Firebase"
+                    }
+                }
+                .show()
+        }
+
+        binding.loginButton.setOnClickListener {
+            val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+            if (user == null)
+                findNavController().navigate(R.id.action_drawFragment_to_loginFragment)
+            else
+            {
+                AlertDialog.Builder(context)
+                    .setTitle("You are already Logged in as: " + user.email)
+                    .setMessage("Click anywhere to cancel.")
+                    .setPositiveButton("OK") { dialog, which ->
+                        dialog.dismiss() // close the dialog
+                    }
+                    .setNegativeButton("Log Out") { dialog, which ->
+                        FirebaseAuth.getInstance().signOut() // Log out the user
+                        binding.loginText.text = "Not Logged In" // Set text to logged out
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+            }
+        }
 
         // Observe pensize change
         viewModel.penSize.observe(viewLifecycleOwner) { size ->
@@ -98,12 +202,34 @@ class DrawFragment : Fragment() {
 
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.fileName.observe(viewLifecycleOwner){ fileName ->
             binding.customView.loadBitmapFromFile(requireContext(),fileName)
+        }
+
+        viewModel.imagePath.observe(viewLifecycleOwner) { path ->
+            loadImage(path)
+        }
+    }
+
+    private fun loadImage(imagePath: String) {
+        // load an image from Firebase Storage
+        val storageRef = Firebase.storage.reference.child(imagePath)
+
+        // Make sure we can edit Bitmap
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+        }
+        storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+
+            // Update the customView with this bitmap
+            binding.customView.setBitmap(bmp)
+
+        }.addOnFailureListener {
+            // Handle any errors
         }
     }
 

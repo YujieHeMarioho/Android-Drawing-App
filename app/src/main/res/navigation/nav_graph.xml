@@ -25,6 +25,12 @@
         <action
             android:id="@+id/action_drawFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_drawFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_drawFragment_to_firebaseFragment"
+            app:destination="@id/firebaseFragment" />
 
     </fragment>
 
@@ -37,4 +43,22 @@
             android:id="@+id/action_listFragment_to_drawFragment"
             app:destination="@id/drawFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.finaldraw.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_drawFragment"
+            app:destination="@id/drawFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/firebaseFragment"
+        android:name="com.example.finaldraw.FirebaseFragment"
+        android:label="fragment_firebase"
+        tools:layout="@layout/fragment_firebase" >
+        <action
+            android:id="@+id/action_firebaseFragment_to_drawFragment"
+            app:destination="@id/drawFragment" />
+    </fragment>
+
 </navigation>

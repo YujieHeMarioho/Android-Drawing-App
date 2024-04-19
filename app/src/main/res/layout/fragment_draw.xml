@@ -10,41 +10,68 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="63dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="63dp">
 
-            <Button
-                android:id="@+id/saveBut"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/loadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="Load" />
+                <Button
+                    android:id="@+id/saveBut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save" />
 
-            <Button
-                android:id="@+id/button_add_noise"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add Noise" />
+                <Button
+                    android:id="@+id/SaveCloud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save to Cloud" />
 
-            <Button
-                android:id="@+id/button_invert_colors"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Invert Colors" />
+                <Button
+                    android:id="@+id/loadButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Load" />
 
-        </LinearLayout>
-    </HorizontalScrollView>
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Login" />
+
+                <Button
+                    android:id="@+id/button_add_noise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Noise" />
+
+                <Button
+                    android:id="@+id/button_invert_colors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Invert Colors" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Not Logged In" />
+    </LinearLayout>
 
 </FrameLayout>
