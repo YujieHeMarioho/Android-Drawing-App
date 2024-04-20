@@ -214,25 +214,6 @@ class DrawFragment : Fragment() {
         }
     }
 
-    private fun loadImage(imagePath: String) {
-        // load an image from Firebase Storage
-        val storageRef = Firebase.storage.reference.child(imagePath)
-
-        // Make sure we can edit Bitmap
-        val options = BitmapFactory.Options().apply {
-            inMutable = true
-        }
-        storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
-            val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
-
-            // Update the customView with this bitmap
-            binding.customView.setBitmap(bmp)
-
-        }.addOnFailureListener {
-            // Handle any errors
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         // Nullify the binding when the view is destroyed to avoid memory leaks
