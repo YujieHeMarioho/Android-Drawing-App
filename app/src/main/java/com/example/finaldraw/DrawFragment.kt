@@ -210,7 +210,7 @@ class DrawFragment : Fragment() {
         }
 
         viewModel.imagePath.observe(viewLifecycleOwner) { path ->
-            loadImage(path)
+            binding.customView.loadBitmapFromFirestore(requireContext(), path)
         }
     }
 

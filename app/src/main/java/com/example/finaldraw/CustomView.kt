@@ -11,6 +11,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -79,6 +81,7 @@ override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         tempBitmap = null // Clear the reference to tempBitmap
     }
 }
+
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -174,6 +177,32 @@ override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
                 invalidate()
             } else {
                 Log.e("CustomView", "Failed to decode bitmap from file: $fileName")
+            }
+        }
+    }
+
+    fun loadBitmapFromFirestore(context: Context, imagePath: String) {
+        // load an image from Firebase Storage
+        val storageRef = Firebase.storage.reference.child(imagePath)
+
+        // Make sure we can edit Bitmap
+        val options = BitmapFactory.Options().apply {
+            inMutable = true
+        }
+        storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val newBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+
+            if (newBitmap != null) {
+                // Recycle the old bitmap if it is initialized and different from the new bitmap
+                if (::bitmap.isInitialized && bitmap != newBitmap && !bitmap.isRecycled) {
+                    bitmap.recycle()
+                }
+
+                bitmap = newBitmap
+                bitmapCanvas = Canvas(bitmap)
+                invalidate()
+            } else {
+                Log.e("CustomView", "Failed to decode bitmap from file: $imagePath")
             }
         }
     }
