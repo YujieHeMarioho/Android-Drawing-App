@@ -100,19 +100,19 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //to get livedata + viewmodel stuff
-    implementation("6androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     //Fragment stuff
     implementation("androidx.fragment:fragment-ktx:1.6.2")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     // Color picker
     implementation ("com.github.yukuku:ambilwarna:2.0.1")
     // Testing
     testImplementation ("junit:junit:4.13.2")
     //testImplementation ("org.mockito:mockito-core:3.11.2")
-    testImplementation ("org.mockito:mockito-inline:3.11.2")
+    testImplementation ("org.mockito:mockito-inline:5.2.0")
     //testImplementation ("androidx.arch.core:core-testing:2.1.0")
 
     // Room Stuff
@@ -121,11 +121,11 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
     //KTOR dependencies
-    implementation("io.ktor:ktor-client-core:2.3.8")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.8")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
-    implementation("io.ktor:ktor-client-cio:2.3.8")
-    implementation("io.ktor:ktor-client-android:2.3.8")
+    implementation("io.ktor:ktor-client-core:2.3.10")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.10")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.10")
+    implementation("io.ktor:ktor-client-cio:2.3.10")
+    implementation("io.ktor:ktor-client-android:2.3.10")
     //implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     //Jetpack compose
